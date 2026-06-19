@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 import pickle
 import os
 import numpy as np
-from database import log_incident, get_all_logs, init_db, is_whitelisted
+from database import log_incident, get_all_logs, init_db,is_whitelisted
 
 def url_tokenizer(url):
     return url.split('/')
@@ -38,15 +38,14 @@ def scan_url():
     
     if not input_url:
         return redirect(url_for('dashboard'))
-        
-    # 1. Feed the URL into the AI model
-    vectorized_url = vectorizer.transform([input_url])
     
-    # Get the probability score for phishing * starting at index 1*
-    probabilities = model.predict_proba(vectorized_url)[0]
-    risk_score = round(float(probabilities[1]) * 100, 2)
+    if is_whitelisted(input_url):
+        risk_score = 0.00
+    else:     
+        vectorized_url = vectorizer.transform([input_url]) 
+        probabilities = model.predict_proba(vectorized_url)[0]
+        risk_score = round(float(probabilities[1]) * 100, 2)
     
-    # 2. Automated Response Logic (The "Act & Neutralise" part of your project)
     if risk_score >= 60.0:
         status = "MALICIOUS"
         action_taken = "Access Blocked | Session Revoked | Admin Alerted"

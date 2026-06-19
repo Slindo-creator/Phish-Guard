@@ -45,9 +45,12 @@ def log_incident(url, risk_score, status, action_taken):
     for domain in legit_domains:
         cursor.execute("INSERT OR IGNORE INTO whitelist (domain) VALUES (?)", (domain,))
     
-    
-    conn.commit()
-    conn.close()
+    def log_incident(url, risk_score, status, action_taken):
+        conn = sqlite3.connect(DB_FILE)
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO threat_logs (url, risk_score, status, action_taken) VALUES (?, ?, ?, ?)', (url, risk_score, status, action_taken))
+        conn.commit()
+        conn.close()
 
 def get_all_logs():
     """Retrieves all logged incidents to display on the dashboard."""
