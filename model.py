@@ -6,6 +6,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report
 
+def url_tokenizer(url):
+    return url.split('/')
 
 def training_model():
     
@@ -19,7 +21,7 @@ def training_model():
     df = pd.read_csv(database_path)
     
     
-     X = df['url']
+    X = df['url']
     y = df['label']
 
     #  Splits data into Training (80%) of the model and Testing (20%) of the model
@@ -28,7 +30,7 @@ def training_model():
     print("Vectorizing text URLs into numerical data...")
     # TfidfVectorizer breaks URLs down into pieces (tokens) to find malicious patterns
     
-    vectorizer = TfidfVectorizer(tokenizer=lambda x: x.split('/'))
+    vectorizer = TfidfVectorizer(tokenizer=url_tokenizer, token_pattern=None)
     X_train_vectorized = vectorizer.fit_transform(X_train)
     X_test_vectorized = vectorizer.transform(X_test)
 
@@ -54,4 +56,4 @@ def training_model():
     print("Done! 'phishing_model.pkl' and 'vectorizer.pkl' are ready for your Flask app.")
 
 if __name__ == "__main__":
-    train_phishing_model()
+    training_model()

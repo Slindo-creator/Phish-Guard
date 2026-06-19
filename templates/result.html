@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="max-w-2xl mx-auto my-12 bg-gray-900 border-2 border-red-900/60 rounded-2xl p-8 shadow-2xl shadow-red-950/30 text-center relative overflow-hidden">
+    
+    <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-red-600 via-orange-500 to-red-600 animate-pulse"></div>
+
+    <div class="w-20 h-20 bg-red-500/10 border border-red-500/30 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl shadow-inner shadow-red-500/5">
+        🛑
+    </div>
+
+    <h2 class="text-2xl font-black tracking-wide text-red-500 font-mono uppercase mb-2">
+        NETWORK ACCESS INTERCEPTED
+    </h2>
+    <p class="text-sm text-gray-400 max-w-md mx-auto mb-8">
+        PhishGuard AI has actively dropped this connection vector to prevent potential credential theft or operational disruption.
+    </p>
+
+    <div class="bg-gray-950 border border-gray-800 rounded-xl p-6 text-left font-mono text-xs space-y-4 mb-8">
+        <div>
+            <span class="text-gray-500 block uppercase text-[10px] tracking-wider mb-1">Flagged Threat Vector:</span>
+            <span class="text-red-400 break-all font-bold text-sm">{{ url }}</span>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4 border-t border-gray-900 pt-4">
+            <div>
+                <span class="text-gray-500 block uppercase text-[10px] tracking-wider mb-1">AI Evaluated Risk:</span>
+                <span class="text-red-500 text-base font-black">{{ score }}% Phishing Link Match</span>
+            </div>
+            <div>
+                <span class="text-gray-500 block uppercase text-[10px] tracking-wider mb-1">Mitigation Profile:</span>
+                <span class="text-orange-400 font-semibold uppercase tracking-tight text-xs">CRITICAL INTRUSION RISK</span>
+            </div>
+        </div>
+
+        <div class="border-t border-gray-900 pt-4">
+            <span class="text-gray-500 block uppercase text-[10px] tracking-wider mb-1">Automated Response Actions Logged:</span>
+            <p class="text-gray-300 bg-gray-900 border border-gray-850 px-3 py-2.5 rounded text-[11px] leading-relaxed">
+                {{ action }}
+            </p>
+        </div>
+    </div>
+
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="/" class="w-full sm:w-auto bg-gray-800 hover:bg-gray-700 text-gray-200 text-xs font-mono tracking-wider px-6 py-3.5 rounded-lg transition-colors border border-gray-700">
+            🎛️ RETURN TO APP DASHBOARD
+        </a>
+        <a href="https://wethinkcode.co.za" target="_blank" class="w-full sm:w-auto bg-red-950/40 hover:bg-red-900/40 text-red-400 text-xs font-mono tracking-wider px-6 py-3.5 rounded-lg transition-colors border border-red-900/30">
+            🛡️ FILE PSEUDO FALSE POSITIVE REPORT
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

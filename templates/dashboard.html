@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    
+    <div class="lg:col-span-1 bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-xl h-fit">
+        <h2 class="text-lg font-bold text-gray-200 mb-2 flex items-center gap-2">
+            🔍 Analyze Threat Vector
+        </h2>
+        <p class="text-xs text-gray-400 mb-6">Pencil in any incoming network URL to route it through the Scikit-Learn evaluation engine.</p>
+        
+        <form action="/scan" method="POST" class="space-y-4">
+            <div>
+                <label class="block text-xs font-mono text-gray-400 uppercase tracking-wider mb-2">Target URL Address</label>
+                <input type="text" name="url" placeholder="e.g., http://secure-paypal-login.com" required 
+                       class="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-3 text-sm text-gray-100 focus:outline-none focus:border-emerald-500 font-mono transition-colors">
+            </div>
+            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium py-3 rounded-lg transition-all shadow-lg shadow-emerald-900/20 font-mono tracking-wide">
+                EXECUTE REAL-TIME SCAN ⚡
+            </button>
+        </form>
+    </div>
+
+    <div class="lg:col-span-2 bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-xl">
+        <h2 class="text-lg font-bold text-gray-200 mb-2 flex items-center gap-2">
+            📊 Local Threat Intelligence Registry
+        </h2>
+        <p class="text-xs text-gray-400 mb-6">Historical index of processed alerts managed inside your standalone SQLite transactional table.</p>
+
+        <div class="overflow-x-auto rounded-lg border border-gray-800">
+            <table class="w-full text-left border-collapse text-sm">
+                <thead>
+                    <tr class="bg-gray-950 font-mono text-xs text-gray-400 border-b border-gray-800 uppercase tracking-wider">
+                        <th class="p-4">Timestamp</th>
+                        <th class="p-4">Target URL</th>
+                        <th class="p-4 text-center">AI Risk</th>
+                        <th class="p-4">Mitigation Protocol Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-800 font-mono text-xs">
+                    {% if logs %}
+                        {% for log in logs %}
+                        <tr class="hover:bg-gray-850/40 transition-colors">
+                            <td class="p-4 text-gray-500 whitespace-nowrap">{{ log[1] }}</td>
+                            <td class="p-4 text-gray-300 truncate max-w-xs" title="{{ log[2] }}">{{ log[2] }}</td>
+                            <td class="p-4 text-center">
+                                {% if log[3] >= 60.0 %}
+                                    <span class="bg-red-500/10 text-red-400 px-2 py-0.5 rounded border border-red-500/20 font-bold">{{ log[3] }}%</span>
+                                {% else %}
+                                    <span class="bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20">{{ log[3] }}%</span>
+                                {% endif %}
+                            </td>
+                            <td class="p-4">
+                                {% if log[4] == 'MALICIOUS' %}
+                                    <span class="text-red-400 font-semibold">{{ log[5] }}</span>
+                                {% else %}
+                                    <span class="text-gray-400">{{ log[5] }}</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="p-8 text-center text-gray-500 italic">No network traffic logged inside phishguard.db yet. Submit a URL to populate this stream.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
