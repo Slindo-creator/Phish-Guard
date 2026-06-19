@@ -4,11 +4,10 @@ import os
 DB_FILE = "phishguard.db"
 
 def init_db():
-    """Initializes the SQLite database and creates the threat log table."""
+    """Initializes the SQLite database, logs, and trusted whitelists."""
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
     
-    # Create a table to store threat incidents
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS threat_logs (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -19,15 +18,6 @@ def init_db():
             action_taken TEXT NOT NULL
         )
     ''')
-    
-    conn.commit()
-    conn.close()
-    print("SQLite database initialized successfully!")
-
-def log_incident(url, risk_score, status, action_taken):
-    """Inserts a new phishing or safe incident into the database."""
-    conn = sqlite3.connect(DB_FILE)
-    cursor = conn.cursor()
     
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS whitelist (
@@ -45,23 +35,30 @@ def log_incident(url, risk_score, status, action_taken):
     for domain in legit_domains:
         cursor.execute("INSERT OR IGNORE INTO whitelist (domain) VALUES (?)", (domain,))
     
-    def log_incident(url, risk_score, status, action_taken):
-        conn = sqlite3.connect(DB_FILE)
-        cursor = conn.cursor()
-        cursor.execute('INSERT INTO threat_logs (url, risk_score, status, action_taken) VALUES (?, ?, ?, ?)', (url, risk_score, status, action_taken))
-        conn.commit()
-        conn.close()
+    conn.commit()
+    conn.close()
+    print("📁 SQLite database, log schemas, and whitelist tables initialized successfully!")
 
-def get_all_logs():
-    """Retrieves all logged incidents to display on the dashboard."""
+def log_incident(url, risk_score, status, action_taken):
+    """Inserts a verified scanned traffic instance into local storage logs."""
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
-    
+    cursor.execute('''
+        INSERT INTO threat_logs (url, risk_score, status, action_taken) 
+        VALUES (?, ?, ?, ?)
+    ''', (url, risk_score, status, action_taken))
+    conn.commit()
+    conn.close()
+
+def get_all_logs():
+    """Retrieves chronological transaction index list rows for UI display."""
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
     cursor.execute("SELECT * FROM threat_logs ORDER BY timestamp DESC")
     logs = cursor.fetchall()
-    
     conn.close()
     return logs
 
 if __name__ == "__main__":
     init_db()
+
