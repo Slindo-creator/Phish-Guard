@@ -5,27 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PhishGuard AI — Real-Time Threat Mitigator</title>
     <script src="https://tailwindcss.com"></script>
+    
+    <style>
+        body {
+            background-color: #030712 !important; 
+            color: #f3f4f6 !important; 
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+        }
+        header {
+            background-color: #111827 !important; 
+            border-bottom: 2px solid #1f2937 !important;
+        }
+        .card-panel {
+            background-color: #111827 !important;
+            border: 1px solid #374151 !important;
+            border-radius: 0.75rem !important;
+        }
+        input {
+            background-color: #030712 !important;
+            border: 1px solid #4b5563 !important;
+            color: #10b981 !important; 
+        }
+        input:focus {
+            border-color: #10b981 !important;
+            outline: none !important;
+        }
+        table {
+            background-color: #0b0f19 !important;
+        }
+        th {
+            background-color: #111827 !important;
+            color: #9ca3af !important;
+            border-bottom: 2px solid #1f2937 !important;
+        }
+        tr {
+            border-bottom: 1px solid #1f2937 !important;
+        }
+        tr:hover {
+            background-color: #111827 !important;
+        }
+    </style>
 </head>
-<body class="bg-gray-950 text-gray-100 font-sans min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col">
 
-    <header class="border-b border-gray-800 bg-gray-900/50 backdrop-blur-md sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+    <header class="w-full">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-3">
                 <span class="text-2xl">🛡️</span>
-                <h1 class="text-xl font-bold tracking-wider text-emerald-400">PHISH<span class="text-gray-100">GUARD</span> <span class="text-xs bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20">AI MVP</span></h1>
+                <h1 class="text-xl font-bold tracking-wider style='color: #10b981;'">
+                    PHISH<span style="color: #ffffff;">GUARD</span> 
+                    <span style="font-size: 0.75rem; background-color: rgba(16, 185, 129, 0.1); color: #10b981; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid rgba(16, 185, 129, 0.2); margin-left: 0.5rem;">SOLO MVP</span>
+                </h1>
             </div>
-            <div class="text-sm text-gray-400 font-mono bg-gray-950 px-3 py-1.5 rounded border border-gray-800">
-                STATUS: <span class="text-emerald-400 animate-pulse">SECURE RUNTIME</span>
+            <div style="font-size: 0.875rem; color: #9ca3af; font-family: monospace; background-color: #030712; padding: 0.5rem 0.75rem; border-radius: 0.375rem; border: 1px solid #1f2937;">
+                SYSTEM STATUS: <span style="color: #10b981; font-weight: bold; animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;">● ACTIVE SECURE RUNTIME</span>
             </div>
         </div>
     </header>
 
-    <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-8">
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-6xl w-full mx-auto px-6 py-8">
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="border-t border-gray-900 bg-gray-950 py-6 text-center text-sm text-gray-500 font-mono">
-        PhishGuard AI Solo Edition &copy; 2026 
+    <!-- Footer -->
+    <footer style="border-top: 1px solid #1f2937; background-color: #030712; padding: 1.5rem 0; text-center; font-size: 0.875rem; color: #6b7280; font-family: monospace;" class="text-center">
+        PhishGuard AI Solo Edition &copy; 2026
     </footer>
 
 </body>

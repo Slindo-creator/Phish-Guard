@@ -29,7 +29,7 @@ def init_db():
     legit_domains = [
         'google.com', 'google.co.za', 'wethinkcode.co.za', 'github.com', 
         'takealot.com', 'hacksouth.africa', 'netflix.com', 'youtube.com', 
-        'microsoft.com', 'absa.co.za', 'fnb.co.za', 'standardbank.co.za'
+        'microsoft.com', 'absa.co.za', 'fnb.co.za', 'standardbank.co.za',
     ]
      
     for domain in legit_domains:
