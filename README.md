@@ -23,3 +23,30 @@ Phish-Guard/
 └── app.py                    # Core web routing configuration engine
 ```
 
+Install Required Application Dependencies
+This command sequence inside to active terminal console to download core system binaries:
+```bash
+pip install flask scikit-learn pandas numpy
+```
+
+Initialize the AI Prediction Assets
+Train and save the pipeline models onto your physical hard drive by running:
+```bash
+python model.py
+```
+*This will produce `phishing_model.pkl` and `vectorizer.pkl` dependencies directly into your workspace root.*
+
+
+Seed the Transaction Tables & Fire Up the Server
+Initialize your SQLite log files and boot the engine:
+```bash
+python database.py
+python app.py
+```
+Navigate to your local browser interface address: `http://127.0.0.1:5000`
+
+
+Live Code Demonstration Showcase
+Click the link below to watch the complete 5–10 minute implementation walkthrough, repository commit architecture review, and live exploitation interception validation
+
+[WATCH MY PHISHGUARD AI VIDEO DEMONSTRATION ON YOUTUBE](will fill after fliming video)
