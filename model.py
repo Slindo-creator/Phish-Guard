@@ -11,7 +11,7 @@ def url_tokenizer(url):
 
 def training_model():
     
-    database_path = os.path.join('data', 'phishing_urls.csv')
+    database_path = os.path.join('data', 'phishing_site_urls.csv')
     
     if not os.path.exists(database_path):
         print(f"Error: please place your dataset at {database_path} before running")
@@ -21,7 +21,7 @@ def training_model():
     df = pd.read_csv(database_path)
     
     
-    X = df['url']
+    X = df['URL']
     y = df['label']
 
     #  Splits data into Training (80%) of the model and Testing (20%) of the model

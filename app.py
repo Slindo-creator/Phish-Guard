@@ -67,7 +67,7 @@ def scan_url():
 
     if risk_score >= 60.0:
         status = "MALICIOUS"
-        action_taken = "⚠️ Access Blocked | Session Revoked | Admin Alerted"
+        action_taken = "Access Blocked | Session Revoked | Admin Alerted"
     else:
         status = "SAFE"
         action_taken = "✅ Connection Allowed"

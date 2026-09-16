@@ -38,7 +38,7 @@ def init_db():
     
     conn.commit()
     conn.close()
-    print("📁 SQLite database, log schemas, and whitelist tables initialized successfully!")
+    print("SQLite database, log schemas, and whitelist tables initialized successfully!")
 
 def log_incident(url, risk_score, status, action_taken):
     """Inserts a verified scanned traffic instance into local storage logs."""
