@@ -56,21 +56,36 @@ def scan_url():
         
     if check_whitelist_locally(input_url):
         risk_score = 0.00
+        payment_safety = "Whitelisted Domain"
+        is_payment_page = False
     else:
         vectorized_url = vectorizer.transform([input_url])
         probabilities = model.predict_proba(vectorized_url)
-        risk_score = round(float(probabilities[0][1]) * 100, 2)
+        risk_score = round(float(probabilities[0][0]) * 100, 2)
         
         phishing_keywords = ['paypal-', 'secure-bank', 'login-update', 'verify-account', 'wethinkcode-portal']
         if any(keyword in input_url.lower() for keyword in phishing_keywords):
             risk_score = 95.00
+        
+        payment_keywords = ['pay', 'checkout', 'bank', 'shop', 'billing', 'invoice', 'boleto', 'transfer']
+        is_payment_page = any(kw in input_url.lower() for kw in payment_keywords)
+        
+        if is_payment_page:
+            if not input_url.lower().startswith("https://"):
+                # CRITICAL DANGER: A payment page without HTTPS is an absolute trap
+                risk_score = 100.00
+                payment_safety = " DANGER: Payment page lacks HTTPS encryption! NEVER enter your card here."
+            else:
+                payment_safety = "Secure Gateway: Uses HTTPS encryption for online payments."
+        else:
+            payment_safety = "N/A (Not a detected checkout gateway)"
 
-    if risk_score >= 60.0:
+    if risk_score >= 30.0:
         status = "MALICIOUS"
         action_taken = "Access Blocked | Session Revoked | Admin Alerted"
     else:
         status = "SAFE"
-        action_taken = "✅ Connection Allowed"
+        action_taken = "Connection Allowed"
         
     log_incident(input_url, risk_score, status, action_taken)
     
