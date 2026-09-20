@@ -1,67 +1,68 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Main layout wrapper matching TryHackMe style grid system -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 text-sans">
     
-    <div class="lg:col-span-1 bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-xl h-fit">
-        <h2 class="text-lg font-bold text-gray-200 mb-2 flex items-center gap-2">
+    <!-- Left panel: Analyze Target Form -->
+    <div class="lg:col-span-1 bg-[#1f2a3c] border border-[#2b394f] rounded-xl p-6 shadow-2xl h-fit">
+        <h2 class="text-lg font-bold text-[#f3f4f6] mb-2 flex items-center gap-2 tracking-wide uppercase font-mono">
             🔍 Analyze Threat Vector
         </h2>
-        <p class="text-xs text-gray-400 mb-6">Pencil in any incoming network URL to route it through the Scikit-Learn evaluation engine.</p>
         
         <form action="/scan" method="POST" class="space-y-4">
-            <div>
-                <label class="block text-xs font-mono text-gray-400 uppercase tracking-wider mb-2">Target URL Address</label>
-                <input type="text" name="url" placeholder="e.g., http://secure-paypal-login.com" required 
-                       class="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-3 text-sm text-gray-100 focus:outline-none focus:border-emerald-500 font-mono transition-colors">
-            </div>
-            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium py-3 rounded-lg transition-all shadow-lg shadow-emerald-900/20 font-mono tracking-wide">
-                EXECUTE REAL-TIME SCAN ⚡
-            </button>
+            <div class="flex items-center bg-[#161e2d] border border-[#2b394f] rounded-full p-1 pl-4 focus-within:border-[#98e32c] transition-colors group">
+                <input type="text" name="url" placeholder="e.g., secure-paypal-login.com" required 
+                       class="w-full bg-transparent text-sm text-[#f3f4f6] focus:outline-none font-mono py-2">
+                
+                <button type="submit" class="bg-[#98e32c] hover:bg-[#b4f542] text-[#111723] text-xs font-bold px-5 py-2.5 rounded-full transition-all font-mono tracking-wide uppercase whitespace-nowrap shadow-md">
+                   EXECUTE SCAN ⚡
+                </button>
         </form>
     </div>
 
-    <div class="lg:col-span-2 bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-xl">
-        <h2 class="text-lg font-bold text-gray-200 mb-2 flex items-center gap-2">
-            📊 Local Threat Intelligence Registry
+    <!-- Right panel: Local Threat Intelligence Registry logs -->
+    <div class="lg:col-span-2 bg-[#1f2a3c] border border-[#2b394f] rounded-xl p-6 shadow-2xl">
+        <h2 class="text-lg font-bold text-[#f3f4f6] mb-2 flex items-center gap-2 tracking-wide uppercase font-mono">
+            Local Threat Intelligence Registry
         </h2>
-        <p class="text-xs text-gray-400 mb-6">Historical index of processed alerts managed inside your standalone SQLite transactional table.</p>
 
-        <div class="overflow-x-auto rounded-lg border border-gray-800">
+        <div class="overflow-x-auto rounded-lg border border-[#2b394f]">
             <table class="w-full text-left border-collapse text-sm">
                 <thead>
-                    <tr class="bg-gray-950 font-mono text-xs text-gray-400 border-b border-gray-800 uppercase tracking-wider">
+                    <tr class="bg-[#161e2d] font-mono text-xs text-[#7f8fa4] border-b border-[#2b394f] uppercase tracking-wider">
                         <th class="p-4">Timestamp</th>
                         <th class="p-4">Target URL</th>
                         <th class="p-4 text-center">AI Risk</th>
                         <th class="p-4">Mitigation Protocol Status</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-800 font-mono text-xs">
+                <tbody class="divide-y divide-[#2b394f] font-mono text-xs">
                     {% if logs %}
                         {% for log in logs %}
-                        <tr class="hover:bg-gray-850/40 transition-colors">
-                            <td class="p-4 text-gray-500 whitespace-nowrap">{{ log[1] }}</td>
-                            <td class="p-4 text-gray-300 truncate max-w-xs" title="{{ log[2] }}">{{ log[2] }}</td>
+                        <tr class="hover:bg-[#2b394f]/40 transition-colors">
+                            <td class="p-4 text-[#7f8fa4] whitespace-nowrap">{{ log[1] }}</td>
+                            <td class="p-4 text-[#f3f4f6] truncate max-w-xs" title="{{ log[2] }}"><code>{{ log[2] }}</code></td>
                             <td class="p-4 text-center">
-                                {% if log[3] >= 60.0 %}
-                                    <span class="bg-red-500/10 text-red-400 px-2 py-0.5 rounded border border-red-500/20 font-bold">{{ log[3] }}%</span>
+                                <!-- Updated threshold indicator from 60.0 to 40.0 to match your backend logic -->
+                                {% if log[3] >= 40.0 %}
+                                    <span class="bg-red-500/10 text-[#ff4a4a] px-2 py-0.5 rounded border border-red-500/20 font-bold">{{ log[3] }}%</span>
                                 {% else %}
-                                    <span class="bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20">{{ log[3] }}%</span>
+                                    <span class="bg-[#98e32c]/10 text-[#98e32c] px-2 py-0.5 rounded border border-[#98e32c]/20">{{ log[3] }}%</span>
                                 {% endif %}
                             </td>
                             <td class="p-4">
                                 {% if log[4] == 'MALICIOUS' %}
-                                    <span class="text-red-400 font-semibold">{{ log[5] }}</span>
+                                    <span class="text-[#ff4a4a] font-semibold bg-red-500/5 px-2 py-1 rounded border border-red-500/10">{{ log[5] }}</span>
                                 {% else %}
-                                    <span class="text-gray-400">{{ log[5] }}</span>
+                                    <span class="text-[#98e32c] bg-[#98e32c]/5 px-2 py-1 rounded border border-[#98e32c]/10">{{ log[5] }}</span>
                                 {% endif %}
                             </td>
                         </tr>
                         {% endfor %}
                     {% else %}
                         <tr>
-                            <td colspan="4" class="p-8 text-center text-gray-500 italic">No network traffic logged inside phishguard.db yet. Submit a URL to populate this stream.</td>
+                            <td colspan="4" class="p-8 text-center text-[#7f8fa4] italic bg-[#161e2d]/50">No network traffic logged inside phishguard.db yet. Submit a URL to populate this stream.</td>
                         </tr>
                     {% endif %}
                 </tbody>
@@ -72,4 +73,3 @@
 </div>
 
 {% endblock %}
-
