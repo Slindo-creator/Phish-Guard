@@ -1,5 +1,32 @@
 PhishGuard AI — Real-Time Threat Mitigation Engine
 
+To run this project on a modern Linux or Mac system, please follow these steps to avoid environment blocks:
+
+### 1. Set up a Virtual Environment
+Open your terminal inside the project folder and run:
+```bash
+python3 -m venv venv
+```
+
+### 2. Activate the Environment
+Turn on the safe sandbox environment:
+```bash
+source venv/bin/activate
+```
+
+### 3. Install All Dependencies
+Install the required libraries from the checklist:
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Run the Web Application
+Launch the Flask server:
+```bash
+python app.py
+```
+Once running, open your browser and navigate to **http://127.0.0.1:5000**.
+
 Core Engineering Features
 * **Defense-in-Depth Pipeline**: Implements an elite 3-layer verification matrix (Database Whitelist Static Heuristic Rules Machine Learning Engine).
 * **Automated Threat Interception**: Instantly drops execution threads when encountering critical risks ((Risk >= 60%), redirecting users to a standalone `result.html` mitigation screen.
