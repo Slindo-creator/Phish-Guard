@@ -19,8 +19,9 @@ def training_model():
         return 
     print("Loading dataset..")
     df = pd.read_csv(database_path)
-    
-    
+
+    # REDACTED
+
     X = df['URL']
     y = df['label']
 
