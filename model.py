@@ -20,7 +20,9 @@ def training_model():
     print("Loading dataset..")
     df = pd.read_csv(database_path)
 
-    # REDACTED
+    df['Label'] = df['Label'].map({'bad': 1, 'good': 0})
+
+
 
     X = df['URL']
     y = df['Label']
@@ -44,7 +46,8 @@ def training_model():
     accuracy = accuracy_score(y_test, predictions)
     print(f"Training complete! Model Accuracy: {accuracy * 100:.2f}%")
     print("\nClassification Report:")
-    print(classification_report(y_test, predictions))
+    #print(classification_report(y_test, predictions))
+    print(classification_report(y_test, predictions, target_names=['Safe (0)', 'Malicious (1)']))
 
     #Save the trained model and the vectorizer to disk
     print("Saving AI assets to disk...")

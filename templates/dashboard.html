@@ -1,75 +1,326 @@
-{% extends 'base.html' %}
 {% block content %}
-
-<!-- Main layout wrapper matching TryHackMe style grid system -->
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 text-sans">
-    
+ 
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+ 
+  .pg-root {
+    --bg: #070a12;
+    --panel: #0d1220;
+    --panel-2: #0a0f1a;
+    --line: #1c2740;
+    --cyan: #4ce0ff;
+    --magenta: #ff3d7f;
+    --green: #3dffa6;
+    --text: #d7e1f2;
+    --muted: #5c6b8a;
+    font-family: 'Chakra Petch', sans-serif;
+    color: var(--text);
+    background:
+      linear-gradient(var(--bg), var(--bg)),
+      repeating-linear-gradient(0deg, rgba(76,224,255,0.035) 0px, rgba(76,224,255,0.035) 1px, transparent 1px, transparent 24px),
+      repeating-linear-gradient(90deg, rgba(76,224,255,0.035) 0px, rgba(76,224,255,0.035) 1px, transparent 1px, transparent 24px);
+    padding: 2rem;
+    border-radius: 4px;
+    position: relative;
+  }
+ 
+  .pg-mono { font-family: 'JetBrains Mono', monospace; }
+ 
+  .pg-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1.75rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--line);
+  }
+ 
+  .pg-title {
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    margin: 0;
+    color: #f2f6ff;
+    text-shadow: 0 0 18px rgba(76,224,255,0.35);
+  }
+  .pg-title span { color: var(--cyan); }
+ 
+  .pg-subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 0.35rem;
+    letter-spacing: 0.04em;
+  }
+ 
+  .pg-status {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .pg-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+    animation: pg-pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes pg-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+ 
+  .pg-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  @media (min-width: 1024px) {
+    .pg-grid { grid-template-columns: 1fr 2fr; }
+  }
+ 
+  .pg-panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 1.5rem;
+    position: relative;
+  }
+  /* HUD corner brackets */
+  .pg-panel::before, .pg-panel::after {
+    content: '';
+    position: absolute;
+    width: 14px; height: 14px;
+    border-color: var(--cyan);
+    opacity: 0.7;
+  }
+  .pg-panel::before {
+    top: -1px; left: -1px;
+    border-top: 2px solid var(--cyan);
+    border-left: 2px solid var(--cyan);
+  }
+  .pg-panel::after {
+    bottom: -1px; right: -1px;
+    border-bottom: 2px solid var(--cyan);
+    border-right: 2px solid var(--cyan);
+  }
+ 
+  .pg-panel h2 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin: 0 0 1.25rem 0;
+  }
+ 
+  .pg-input-row {
+    display: flex;
+    align-items: center;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 0.15rem 0.15rem 0.15rem 1rem;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .pg-input-row:focus-within {
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 1px rgba(76,224,255,0.25), 0 0 16px rgba(76,224,255,0.15);
+  }
+  .pg-input-row input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    padding: 0.75rem 0;
+  }
+  .pg-input-row input::placeholder { color: var(--muted); }
+ 
+  .pg-btn {
+    background: var(--cyan);
+    color: #04141c;
+    font-family: 'Chakra Petch', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    border: none;
+    border-radius: 3px;
+    padding: 0.7rem 1.2rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: box-shadow 0.15s ease, transform 0.1s ease;
+  }
+  .pg-btn:hover { box-shadow: 0 0 22px rgba(76,224,255,0.55); }
+  .pg-btn:active { transform: scale(0.98); }
+ 
+  .pg-hint {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    margin-top: 0.9rem;
+    line-height: 1.6;
+  }
+ 
+  .pg-table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+  }
+  table.pg-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  table.pg-table thead tr {
+    background: var(--panel-2);
+    border-bottom: 1px solid var(--line);
+  }
+  table.pg-table th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: left;
+    padding: 0.85rem 1rem;
+    font-weight: 500;
+  }
+  table.pg-table td {
+    padding: 0.85rem 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    border-top: 1px solid var(--line);
+    color: var(--text);
+  }
+  table.pg-table tbody tr { transition: background 0.12s ease; }
+  table.pg-table tbody tr:hover { background: rgba(76,224,255,0.04); }
+ 
+  .pg-url { color: #b9c6e0; }
+ 
+  .pg-risk {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 2px;
+    font-weight: 600;
+  }
+  .pg-risk--high {
+    color: var(--magenta);
+    background: rgba(255,61,127,0.08);
+    border: 1px solid rgba(255,61,127,0.3);
+    text-shadow: 0 0 10px rgba(255,61,127,0.4);
+  }
+  .pg-risk--low {
+    color: var(--green);
+    background: rgba(61,255,166,0.08);
+    border: 1px solid rgba(61,255,166,0.3);
+  }
+ 
+  .pg-tag {
+    display: inline-block;
+    padding: 0.3rem 0.65rem;
+    border-radius: 2px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+  .pg-tag--bad {
+    color: #ffd4e2;
+    background: rgba(255,61,127,0.12);
+    border-left: 2px solid var(--magenta);
+  }
+  .pg-tag--ok {
+    color: #d4ffec;
+    background: rgba(61,255,166,0.1);
+    border-left: 2px solid var(--green);
+  }
+ 
+  .pg-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    background: var(--panel-2);
+  }
+</style>
+ 
+<div class="pg-root">
+ 
+  <div class="pg-header">
+    <div>
+      <h1 class="pg-title">PHISH<span>GUARD</span></h1>
+      <div class="pg-subtitle">// AI-ASSISTED URL RISK ANALYSIS</div>
+    </div>
+    <div class="pg-status">
+      <span class="pg-dot"></span> SYSTEM ONLINE
+    </div>
+  </div>
+ 
+  <div class="pg-grid">
+ 
     <!-- Left panel: Analyze Target Form -->
-    <div class="lg:col-span-1 bg-[#1f2a3c] border border-[#2b394f] rounded-xl p-6 shadow-2xl h-fit">
-        <h2 class="text-lg font-bold text-[#f3f4f6] mb-2 flex items-center gap-2 tracking-wide uppercase font-mono">
-            🔍 Analyze Threat Vector
-        </h2>
-        
-        <form action="/scan" method="POST" class="space-y-4">
-            <div class="flex items-center bg-[#161e2d] border border-[#2b394f] rounded-full p-1 pl-4 focus-within:border-[#98e32c] transition-colors group">
-                <input type="text" name="url" placeholder="e.g., secure-paypal-login.com" required 
-                       class="w-full bg-transparent text-sm text-[#f3f4f6] focus:outline-none font-mono py-2">
-                
-                <button type="submit" class="bg-[#98e32c] hover:bg-[#b4f542] text-[#111723] text-xs font-bold px-5 py-2.5 rounded-full transition-all font-mono tracking-wide uppercase whitespace-nowrap shadow-md">
-                   EXECUTE SCAN ⚡
-                </button>
-        </form>
-    </div>
-
-    <!-- Right panel: Local Threat Intelligence Registry logs -->
-    <div class="lg:col-span-2 bg-[#1f2a3c] border border-[#2b394f] rounded-xl p-6 shadow-2xl">
-        <h2 class="text-lg font-bold text-[#f3f4f6] mb-2 flex items-center gap-2 tracking-wide uppercase font-mono">
-            Local Threat Intelligence Registry
-        </h2>
-
-        <div class="overflow-x-auto rounded-lg border border-[#2b394f]">
-            <table class="w-full text-left border-collapse text-sm">
-                <thead>
-                    <tr class="bg-[#161e2d] font-mono text-xs text-[#7f8fa4] border-b border-[#2b394f] uppercase tracking-wider">
-                        <th class="p-4">Timestamp</th>
-                        <th class="p-4">Target URL</th>
-                        <th class="p-4 text-center">AI Risk</th>
-                        <th class="p-4">Mitigation Protocol Status</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-[#2b394f] font-mono text-xs">
-                    {% if logs %}
-                        {% for log in logs %}
-                        <tr class="hover:bg-[#2b394f]/40 transition-colors">
-                            <td class="p-4 text-[#7f8fa4] whitespace-nowrap">{{ log[1] }}</td>
-                            <td class="p-4 text-[#f3f4f6] truncate max-w-xs" title="{{ log[2] }}"><code>{{ log[2] }}</code></td>
-                            <td class="p-4 text-center">
-                                <!-- Updated threshold indicator from 60.0 to 40.0 to match your backend logic -->
-                                {% if log[3] >= 40.0 %}
-                                    <span class="bg-red-500/10 text-[#ff4a4a] px-2 py-0.5 rounded border border-red-500/20 font-bold">{{ log[3] }}%</span>
-                                {% else %}
-                                    <span class="bg-[#98e32c]/10 text-[#98e32c] px-2 py-0.5 rounded border border-[#98e32c]/20">{{ log[3] }}%</span>
-                                {% endif %}
-                            </td>
-                            <td class="p-4">
-                                {% if log[4] == 'MALICIOUS' %}
-                                    <span class="text-[#ff4a4a] font-semibold bg-red-500/5 px-2 py-1 rounded border border-red-500/10">{{ log[5] }}</span>
-                                {% else %}
-                                    <span class="text-[#98e32c] bg-[#98e32c]/5 px-2 py-1 rounded border border-[#98e32c]/10">{{ log[5] }}</span>
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    {% else %}
-                        <tr>
-                            <td colspan="4" class="p-8 text-center text-[#7f8fa4] italic bg-[#161e2d]/50">No network traffic logged inside phishguard.db yet. Submit a URL to populate this stream.</td>
-                        </tr>
-                    {% endif %}
-                </tbody>
-            </table>
+    <div class="pg-panel">
+      <h2>Analyze Target</h2>
+ 
+      <form action="/scan" method="POST">
+        <div class="pg-input-row">
+          <input type="text" name="url" placeholder="e.g., secure-paypal-login.com" required>
+          <button type="submit" class="pg-btn">Scan &gt;</button>
         </div>
+      </form>
+ 
+      <div class="pg-hint">
+        ENTER A URL TO CHECK IT AGAINST THE RISK MODEL.<br>
+        RESULTS ARE LOGGED BESIDE.
+      </div>
     </div>
-
+ 
+    <!-- Right panel: Local Threat Intelligence Registry logs -->
+    <div class="pg-panel">
+      <h2>Threat Intelligence Log</h2>
+ 
+      <div class="pg-table-wrap">
+        <table class="pg-table">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Target URL</th>
+              <th>AI Risk</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if logs %}
+              {% for log in logs %}
+              <tr>
+                <td class="pg-url">{{ log[1] }}</td>
+                <td class="pg-url"><code>{{ log[2] }}</code></td>
+                <td>
+                  {% if log[3] >= 40.0 %}
+                    <span class="pg-risk pg-risk--high">{{ log[3] }}%</span>
+                  {% else %}
+                    <span class="pg-risk pg-risk--low">{{ log[3] }}%</span>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if log[4] == 'MALICIOUS' %}
+                    <span class="pg-tag pg-tag--bad">{{ log[5] }}</span>
+                  {% else %}
+                    <span class="pg-tag pg-tag--ok">{{ log[5] }}</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            {% else %}
+              <tr>
+                <td colspan="4" class="pg-empty">NO TRAFFIC LOGGED IN phishguard.db — SUBMIT A URL TO BEGIN.</td>
+              </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+ 
+  </div>
 </div>
-
+ 
 {% endblock %}
+ 

@@ -1,64 +1,113 @@
+<Base · HTML
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PhishGuard AI — Real-Time Threat Mitigator</title>
-    <script src="https://tailwindcss.com"></script>
-    
+
+    <!-- Correct Tailwind CDN (the previous src="https://tailwindcss.com" pointed at the
+         marketing site, not the build, so no utility classes were ever applying) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
     <style>
+        :root {
+            --bg: #070a12;
+            --panel: #0d1220;
+            --panel-2: #0a0f1a;
+            --line: #1c2740;
+            --cyan: #4ce0ff;
+            --magenta: #ff3d7f;
+            --green: #3dffa6;
+            --amber: #ffb14c;
+            --text: #d7e1f2;
+            --muted: #5c6b8a;
+        }
+
         body {
-            background-color: #030712 !important; 
-            color: #f3f4f6 !important; 
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Chakra Petch', sans-serif;
+            background-image:
+                repeating-linear-gradient(0deg, rgba(76,224,255,0.035) 0px, rgba(76,224,255,0.035) 1px, transparent 1px, transparent 24px),
+                repeating-linear-gradient(90deg, rgba(76,224,255,0.035) 0px, rgba(76,224,255,0.035) 1px, transparent 1px, transparent 24px);
         }
+
         header {
-            background-color: #111827 !important; 
-            border-bottom: 2px solid #1f2937 !important;
+            background-color: var(--panel);
+            border-bottom: 1px solid var(--line);
         }
+
+        .pg-mono { font-family: 'JetBrains Mono', monospace; }
+
+        .pg-brand {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            color: #f2f6ff;
+            text-shadow: 0 0 14px rgba(76,224,255,0.3);
+        }
+        .pg-brand span.hl { color: var(--cyan); }
+
+        .pg-tagline {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.04em;
+            color: var(--cyan);
+            background: rgba(76,224,255,0.08);
+            padding: 0.25rem 0.55rem;
+            border-radius: 2px;
+            border: 1px solid rgba(76,224,255,0.25);
+            margin-left: 0.6rem;
+        }
+
+        .pg-status-bar {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+            background-color: var(--panel-2);
+            padding: 0.5rem 0.85rem;
+            border-radius: 3px;
+            border: 1px solid var(--line);
+        }
+
+        .pg-status-dot {
+            color: var(--green);
+            font-weight: bold;
+            animation: pg-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pg-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        footer {
+            border-top: 1px solid var(--line);
+            background-color: var(--bg);
+            color: var(--muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+        }
+
+        /* Generic card class kept for any page still using it */
         .card-panel {
-            background-color: #111827 !important;
-            border: 1px solid #374151 !important;
-            border-radius: 0.75rem !important;
-        }
-        input {
-            background-color: #030712 !important;
-            border: 1px solid #4b5563 !important;
-            color: #10b981 !important; 
-        }
-        input:focus {
-            border-color: #10b981 !important;
-            outline: none !important;
-        }
-        table {
-            background-color: #0b0f19 !important;
-        }
-        th {
-            background-color: #111827 !important;
-            color: #9ca3af !important;
-            border-bottom: 2px solid #1f2937 !important;
-        }
-        tr {
-            border-bottom: 1px solid #1f2937 !important;
-        }
-        tr:hover {
-            background-color: #111827 !important;
+            background-color: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 3px;
         }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
     <header class="w-full">
-        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <span class="text-2xl"></span>
-                <h1 class="text-xl font-bold tracking-wider style='color: #10b981;'">
-                    PHISH<span style="color: #ffffff;">GUARD</span> 
-                    <span style="font-size: 0.75rem; background-color: rgba(16, 185, 129, 0.1); color: #10b981; padding: 0.25rem 0.5rem; border-radius: 0.25rem; border: 1px solid rgba(16, 185, 129, 0.2); margin-left: 0.5rem;">GUARDING YOU TO SAFE SURFING</span>
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center flex-wrap gap-3">
+            <div class="flex items-center">
+                <h1 class="pg-brand flex items-center">
+                    PHISH<span class="hl">GUARD</span>
+                    <span class="pg-tagline">GUARDING YOU TO SAFE SURFING</span>
                 </h1>
             </div>
-            <div style="font-size: 0.875rem; color: #9ca3af; font-family: monospace; background-color: #030712; padding: 0.5rem 0.75rem; border-radius: 0.375rem; border: 1px solid #1f2937;">
-                SYSTEM STATUS: <span style="color: #10b981; font-weight: bold; animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;">● ACTIVE SECURE RUNTIME</span>
+            <div class="pg-status-bar">
+                SYSTEM STATUS: <span class="pg-status-dot">● ACTIVE SECURE RUNTIME</span>
             </div>
         </div>
     </header>
@@ -69,9 +118,10 @@
     </main>
 
     <!-- Footer -->
-    <footer style="border-top: 1px solid #1f2937; background-color: #030712; padding: 1.5rem 0; text-center; font-size: 0.875rem; color: #6b7280; font-family: monospace;" class="text-center">
+    <footer class="text-center py-6">
         PhishGuard AI Solo Edition &copy; 2026
     </footer>
 
 </body>
 </html>
+

@@ -53,6 +53,11 @@ def scan_url():
     
     if not input_url:
         return redirect(url_for('dashboard'))
+
+    if check_whitelist_locally(input_url):
+        risk_score = 0.00
+        status = "SAFE"
+        action_taken = "Whitelisted Domain (Connection Allowed)"
         
     if check_whitelist_locally(input_url):
         risk_score = 0.00
