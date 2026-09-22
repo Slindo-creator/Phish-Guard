@@ -23,7 +23,6 @@ def training_model():
     df['Label'] = df['Label'].map({'bad': 1, 'good': 0})
 
 
-
     X = df['URL']
     y = df['Label']
 
