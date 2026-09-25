@@ -85,6 +85,9 @@ When showcasing the system architecture live or evaluating pipeline performance,
    *Expected Result:* Triggered by the payment scanner, flagged for missing active `https://` encryption, and immediately clamped with a **100% Malicious Block** warning box.
 
 ---
+Your verification code:
+WTC-ZL5564XR
+
 
 ##Live Video Demonstration Walkthrough
 
