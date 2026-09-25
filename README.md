@@ -93,4 +93,4 @@ WTC-ZL5564XR
 
 Click the link below to watch the complete 5–10 minute implementation walkthrough, repository commit architecture review, and live exploitation interception validation:
 
- **[WATCH MY PHISHGUARD AI VIDEO DEMONSTRATION ON YOUTUBE](https://youtu.be/NV3J5IpDHWA)**
+ **[WATCH MY PHISHGUARD AI VIDEO DEMONSTRATION ON YOUTUBE]  (https://youtu.be/NV3J5IpDHWA)**
